@@ -8,11 +8,11 @@ package
 	import org.process.GProcess;
 	
 	[SWF(width="800", height="800")]
-	public class gss extends Sprite
+	public class graph extends Sprite
 	{
 		private var g:GProcess = null;
 		
-		public function gss()
+		public function graph()
 		{
 			stage.scaleMode = StageScaleMode.NO_BORDER;
 			stage.align = StageAlign.TOP_LEFT;
