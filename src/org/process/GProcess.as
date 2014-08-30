@@ -66,23 +66,26 @@ package org.process
 			var socket:Socket = e.target as Socket;
 			var bytes:ByteArray = new ByteArray();
 			socket.readBytes(bytes);
-			var tmp:String = "" + bytes;
-			tmp = tmp.replace(/^\s+/,"");
-			tmp = tmp.replace(/\s+$/,"");
-			//trace("recv:" + tmp);
-			var n = tmp.indexOf("#");
-			if(n == -1){
-				buffer += tmp;
-			}else{
-				if(n == 0){
-					buffer = tmp.substr(1,tmp.length);
-					if(buffer.length > 0){
-						this.onCommand(buffer,socket);
-					}
+			var str:String = "" + bytes;
+			//trace("recv:" + str);
+			var rows:Array = str.split("\n");
+			for each(var s:String in rows){
+				var tmp:String = s.replace(/^\s+/,"");
+				tmp = s.replace(/\s+$/,"");
+				var n:int = tmp.indexOf("#");
+				if(n == -1){
+					buffer += tmp;
 				}else{
-					buffer += tmp.substr(0,n);
-					this.onCommand(buffer,socket);
-					buffer = tmp.substr(n+1,tmp.length);
+					if(n == 0){
+						buffer = tmp.substr(1,tmp.length);
+						if(buffer.length > 0){
+							this.onCommand(buffer,socket);
+						}
+					}else{
+						buffer += tmp.substr(0,n);
+						this.onCommand(buffer,socket);
+						buffer = tmp.substr(n+1,tmp.length);
+					}
 				}
 			}
 		}
